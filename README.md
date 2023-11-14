@@ -53,7 +53,8 @@ Select özelliği kullanım örnekleri;
     SELECT column1,column2 FROM tableName
     SELECT column1 FROM tableName
    
-
+Birden fazla tablomuz ve bu tablonun sütun isimlerinde benzerlik var ise;
+`SELECT Tablo.ad FROM Tablo` Diyerek tam yol belirtmiş oluruz.
  ## SELECT - WHERE
  Select - Where Kullanımı;
  
@@ -156,6 +157,130 @@ Tablomda yukarıdan ilk 5 veriyi görüntülemek istersem.
 
 **maas** sütununu **büyükten - küçüğe** sıralamak istersem.
 `SELECT * FROM Personel ORDER BY maas DESC`
+
+## SUM()
+**Personeller** adında bir **tablomuz** ve **maas** adında **sütunumuz** olsun. 
+
+**SUM()** ile **int** bir sütunun **içerisindeki tüm verileri toplayabiliriz.** Örnek;
+
+`SELECT SUM(maas) FROM Personeller`
+
+**Personeller tablosundaki maas sütunu**nun **tüm verileri toplar.**
+
+### as "takmaAD"
+`SELECT SUM(maas) as ToplamMaas FROM Personeller`
+`SELECT ToplamMaas=SUM(maas) FROM Personeller`
+
+**as** özelliği ile **Personeller** tablosundan **maas sütununun toplamı**nı **ToplamMaas takma adı**yla çıktı alabiliriz.
+
+`SELECT p.ad FROM Personeller as p` 
+Personeller adına takma ad ekleyerek p dedik.
+
+## MAX() - MİN()
+
+**Personeller tablosunda maas sütunundaki değerlerden en yüksek değer**i bulmak istersek;
+
+`SELECT MAX(maas) FROM Personeller`
+
+**Takma Ad eklemek** istersek; 
+`SELECT MAX(maas) as EnYuksekMaas FROM Personeller`
+<hr>
+
+**Personeller tablosunda maas sütunundaki değerlerden en küçük değer**i bulmak istersek;
+
+`SELECT MIN(maas) FROM Personeller`
+
+**Takma Ad eklemek** istersek; 
+`SELECT MIN(maas) as EnDusukMaas FROM Personeller`
+
+## Count()
+
+**Personeller tablosundaki maas sütunun içindeki veri adedi**ni verir.
+**Fakat NULL - NOT değerlerini saymaz.**
+
+Örnek;
+`SELECT COUNT(maas) FROM Personeller`
+
+## UPPER() - LOWER()
+
+**Personeller tablosundaki ad sütunundaki verilerin çıktısını büyük** almak istersem;
+
+`SELECT UPPER(ad) FROM Personeller`
+
+Örnek;
+**Giriş** = `SELECT ad FROM Personeller`
+**Çıktı** = **Hakan**
+
+**Giriş** = `SELECT UPPER(ad) FROM Personeller`
+**Çıktı** = **HAKAN**
+
+<hr>
+
+**Personeller tablosundaki ad sütunundaki verilerin çıktısını küçük** almak istersem;
+
+`SELECT LOWER(ad) FROM Personeller`
+
+Örnek;
+**Giriş** = `SELECT ad FROM Personeller`
+**Çıktı** = **Hakan**
+
+**Giriş** = `SELECT LOWER(ad) FROM Personeller`
+**Çıktı** = **hakan**
+
+## LEN()
+
+**Personeller tablosundaki ad sütunundaki verilerin çıktısının uzunluğu**nu almak istersem;
+
+`SELECT LEN(ad) FROM Personeller`
+
+Örnek;
+**Giriş** = `SELECT ad FROM Personeller`
+**Çıktı** = **Hakan**
+
+**Giriş** = `SELECT LEN(ad) FROM Personeller`
+**Çıktı** = **5**
+
+## AVG()
+
+**Personeller tablosundaki maas sütunu**nun **ortalama veri**sini almak istersek;
+
+`SELECT AVG(maas) FROM Personeller`
+
+## CONVERT()
+
+**Personeller tablosundaki ad sütunun veri tipini değiştirmek** için;
+
+`SELECT CONVERT(varchar(3), ad) FROM Personeller`
+`SELECT CAST(26.10 as int)` **26.10** Değerinin **tipini** **int** e çevirir.
+
+## Zaman Fonksiyonları - GETDATE(), GETUTCDATE(), DATENAME(), DATEDIFF(), DATEADD()
+
+`SELECT GETDATE()` **Şimdiki** zaman.
+`SELECT GETUTCDATE()` **UTC** zamanı.
+
+`SELECT DATENAME(DAY, CURRENT_TIMESTAMP)` **Gün**.
+`SELECT DATENAME(MONTH, CURRENT_TIMESTAMP)` **Ay**.
+`SELECT DATENAME(YEAR, CURRENT_TIMESTAMP)` **Yıl**.
+
+**Yıl cinsinden Personeller tablosundaki personellerin giriş tarihi ile günümüz arasındaki fark**ı alalım;
+
+`SELECT DATEDIFF(YEAR, girisTarihi, GETDATE()) FROM Personeller`
+**Yıl** cinsini **ay** veya **gün** ile değiştirmek için **YEAR** **yerine** **MONTH** veya **DAY** yazıyoruz.
+
+Personellerin **giriş** **yaptığı** **yıl** ı almak istersem;
+
+`SELECT DATENAME(YEAR, girisTarihi) FROM Personeller`
+
+Personellerin **giriş yaptığı yıl a ekleme yapmak** istersem;
+
+`SELECT DATEADD(YY, 3, girisTarihi) FROM Personeller` Personellerin **giriş yaptığı yıl a 3 yıl eklendi**.
+
+<hr>
+
+### Örnekler;
+
+`SELECT (Notlar.vize*0.4 + Notlar.final*0.6) as ortalamaNot FROM Notlar`
+
 <hr>
 
 # [LIRIANDEV](https://liriandev.com)
