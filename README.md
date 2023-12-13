@@ -1,3 +1,4 @@
+
 ### SQL 
 
 ## CREATE
@@ -281,9 +282,86 @@ Personellerin **giriş yaptığı yıl a ekleme yapmak** istersem;
 
 `SELECT (Notlar.vize*0.4 + Notlar.final*0.6) as ortalamaNot FROM Notlar`
 
+### Parantez içerisinde matematik işlemleri yapabiliriz.
+
+<hr>
+
+Personel **bölümleri**nin **maksimum maaş** değerini verir **fakat maksimum maaş değeri 20.000' den büyük** olmalı.
+
+    select bolum, MAX(maas) as EnYuksekMaas from Personeller GROUP BY bolum having max(maas) > 20000
+
+<hr>
+
+**Görevlerine göre** **maaşı 15.000' den büyük olan kişiler**in **ortalaması** fakat **ortalaması 35.000' den büyük olan**lar.
+
+    select gorev, AVG(maas) as maasOrt from Personeller WHERE maas > 15000 GROUP BY gorev having avg(maas) > 35000
+
+<hr>
+
+# Çoklu Tablo Çalışması
+
+**Personeller ve Bolumler adında iki tablo**muz var. **Personeller tablosundaki bolum sütunu** ile **Bolumler tablosundaki bolumNo sütunu**nu **eşleştir**erek çıktı almak istiyorum.
+
+    select b.*, p.* from Bolumler b, Personeller p where b.bolumNo=p.bolum
+
+Dikkat! birleştirme işlemi **where** den sonra **b.bolumNo=p.bolum de gerçekleşiyor.**
+
+![enter image description here](https://cdn.discordapp.com/attachments/852651577721880586/1184574574113849384/Ekran_goruntusu_2023-12-13_220836.png?ex=658c780a&is=657a030a&hm=d458f0a48ceb4ad3ce55a4575aeaa2c81692787e839140b2e92c4b2f36833ee7&)
+
+-Aynı işlemin **inner join** versiyonu;
+
+    select ... from tabloadi1 inner join tabloadi2 on tabloadi1.alan=tabloadi2.alan
+
+-Aynı işleme **bir koşul daha ekleyelim(AND özelliği)** bu koşulumuz **ad** sütununda **herhangi bir yerinde** **İ** **harfini şartlasın.**
+
+    select b.*, p.* from Bolumler b, Personeller p where b.bolumNo=p.bolum and ad like ('%i%')
+
+![enter image description here](https://cdn.discordapp.com/attachments/852651577721880586/1184578234579435600/Ekran_goruntusu_2023-12-13_222957.png?ex=658c7b73&is=657a0673&hm=7baaa9158a7644ad7257ea3df9134aee075b6799de991d504471901a10f87bef&)
+
+-Aynı işlemde **ad sütununda herhangi bir yerinde i harfi içermesin** ve **soyad sütunu alfabetik sıraya göre** sıralansın.
+
+    select b.*, p.* from Bolumler b, Personeller p where b.bolumNo=p.bolum and ad not like ('%i%') order by soyad
+
+![enter image description here](https://cdn.discordapp.com/attachments/852651577721880586/1184579811176349758/image.png?ex=658c7ceb&is=657a07eb&hm=e2e3339ac39b8e9b0c8314f44f929734d31f8786d632e559e983d2952f65f77b&)
+
+<hr>
+
+### İki tabloyu ilişkilendirme;
+
+    select ... from tabloadi1 inner join tabloadi2 on tabloadi1.alan=tabloadi2.alan where ...
+
+### İkiden fazla tabloyu ilişkilendirme;
+
+    select ... from tabloadi1 inner join tabloadi2 on tabloadi1.alan=tabloadi2.alan inner join tabloadi3 on tabload1.alan=tabloadi3.alan
+
+<hr>
+
+### inner join ile tablo ilişkilendirme arasındaki fark;
+
+    select t.ad, f.filmId, f.ad, f.imdbPuan from Filmler f, Turler t where t.turId = f.turId
+
+-
+
+    select t.ad, f.filmId, f.ad, f.imdbPuan from Filmler f inner join Turler t on t.turId = f.turId
+
+<hr>
+
+## LEFT JOİN
+
+left join - **solda belirtilen tabloyu olduğu gibi getir**ir **sağda belirtilen tablodan sadece eşleşenler**i getirir
+
+![enter image description here](https://cdn.discordapp.com/attachments/852651577721880586/1184583559504203836/Ekran_goruntusu_2023-12-13_222957.png?ex=658c8069&is=657a0b69&hm=e5a4c8a906ce12e4ff9d61bddf0f633c69cc40eecc5b4e5acf8470fe15b845a7&)
+
+
+## RİGHT JOİN ise aynı işlemi sağ`a çevrilmiş hali.
+
+## FULL OUTER JOİN
+
+Herhangi bir koşul olmadan iki tabloyu olduğu gibi ekler.
+
+    
+    select f.filmId, f.ad, f.imdbPuan, t.ad turAD from Filmler f full outer join Turler t on f.turId = f.turId
+
 <hr>
 
 # [LIRIANDEV](https://liriandev.com)
-
-   
-
